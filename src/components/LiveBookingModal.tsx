@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { X, ExternalLink, Calendar, MapPin, Video, CheckCircle2, Clock, ShieldCheck, ArrowRight } from 'lucide-react';
+import { X, ExternalLink, Calendar, MapPin, Video, CheckCircle2, Clock, ShieldCheck, ArrowRight, AlertCircle } from 'lucide-react';
 import { LIVE_SITE_DATA } from '../data/liveSiteData';
+import { sendWeb3Form } from '../lib/sendForm';
 
 interface LiveBookingModalProps {
   isOpen: boolean;
@@ -15,19 +16,54 @@ export const LiveBookingModal: React.FC<LiveBookingModalProps> = ({ isOpen, onCl
   const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
   const [message, setMessage] = useState('');
+  const [botcheck, setBotcheck] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submittedDetails, setSubmittedDetails] = useState<{ appointmentType: string; date: string } | null>(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   if (!isOpen) return null;
 
-  const handleSubmitForm = (e: React.FormEvent) => {
+  const handleSubmitForm = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (name && email && phone && date) {
+    setErrorMessage('');
+    if (!name || !email || !phone || !date) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    const result = await sendWeb3Form({
+      subject: 'Demande de rendez-vous via le site',
+      replyto: email,
+      'Type de rendez-vous': appointmentType === 'cabinet' ? 'Au cabinet (Etterbeek)' : 'Visioconférence',
+      'Nom et Prénom': name,
+      'E-mail': email,
+      'Téléphone': phone,
+      'Date souhaitée': date,
+      'Objet du rendez-vous': message || 'Non spécifié',
+      'Tarif indicatif': '125 € TTC (première consultation)',
+      botcheck,
+    });
+    setIsSubmitting(false);
+
+    if (result.success) {
+      setSubmittedDetails({ appointmentType, date });
       setSubmitted(true);
+      setName('');
+      setEmail('');
+      setPhone('');
+      setDate('');
+      setMessage('');
+      setBotcheck(false);
+    } else {
+      setErrorMessage("L'envoi a échoué. Merci de réessayer ou d'écrire directement à p.maistriau@gmail.com.");
     }
   };
 
   const resetAndClose = () => {
     setSubmitted(false);
+    setSubmittedDetails(null);
+    setErrorMessage('');
     setMode('options');
     onClose();
   };
@@ -51,12 +87,11 @@ export const LiveBookingModal: React.FC<LiveBookingModalProps> = ({ isOpen, onCl
               Demande enregistrée
             </h3>
             <p className="font-serif text-stone-600 text-sm max-w-md mx-auto mb-6">
-              Votre demande de consultation (forfait 125 € TTC) a bien été reçue. 
-              Maître Philippe Maistriau prendra contact avec vous pour confirmer l'horaire précis.
+              Merci, votre message a bien été envoyé. Le cabinet vous répondra dans les meilleurs délais.
             </p>
             <div className="p-4 rounded-xl bg-white border border-[#E2DBD0] text-left text-xs font-sans max-w-md mx-auto space-y-1 mb-6">
-              <div><strong>Mode :</strong> {appointmentType === 'cabinet' ? 'Au cabinet (Rue Abbé Cuypers, 3)' : 'Visioconférence'}</div>
-              <div><strong>Date souhaitée :</strong> {date}</div>
+              <div><strong>Mode :</strong> {submittedDetails?.appointmentType === 'cabinet' ? 'Au cabinet (Rue Abbé Cuypers, 3)' : 'Visioconférence'}</div>
+              <div><strong>Date souhaitée :</strong> {submittedDetails?.date}</div>
               <div><strong>Tarif forfaitaire :</strong> 125 € TTC (durée non strictement limitée)</div>
             </div>
             <button
@@ -241,6 +276,25 @@ export const LiveBookingModal: React.FC<LiveBookingModalProps> = ({ isOpen, onCl
 
             <form onSubmit={handleSubmitForm} className="space-y-4 font-serif">
               
+              {/* Honeypot anti-spam */}
+              <input
+                type="checkbox"
+                name="botcheck"
+                checked={botcheck}
+                onChange={(e) => setBotcheck(e.target.checked)}
+                className="hidden"
+                style={{ display: 'none' }}
+                tabIndex={-1}
+                autoComplete="off"
+              />
+
+              {errorMessage && (
+                <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2 font-sans">
+                  <AlertCircle className="h-4 w-4 shrink-0" />
+                  <span>{errorMessage}</span>
+                </div>
+              )}
+              
               <div className="grid grid-cols-2 gap-3 font-sans">
                 <button
                   type="button"
@@ -338,18 +392,24 @@ export const LiveBookingModal: React.FC<LiveBookingModalProps> = ({ isOpen, onCl
               <div className="pt-2 flex justify-end gap-3 font-sans">
                 <button
                   type="button"
+                  disabled={isSubmitting}
                   onClick={() => setMode('options')}
-                  className="px-4 py-2 text-xs font-semibold text-stone-600 hover:text-stone-900"
+                  className="px-4 py-2 text-xs font-semibold text-stone-600 hover:text-stone-900 disabled:opacity-50"
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
-                  className="rounded-full bg-[#181615] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] hover:bg-stone-800"
+                  disabled={isSubmitting}
+                  className="rounded-full bg-[#181615] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] hover:bg-stone-800 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Confirmer la demande
+                  {isSubmitting ? 'Envoi en cours…' : 'Confirmer la demande'}
                 </button>
               </div>
+
+              <p className="text-center text-xs text-stone-500 font-sans pt-1">
+                Les données transmises sont utilisées uniquement pour répondre à votre demande, dans le respect du secret professionnel.
+              </p>
 
             </form>
           </div>

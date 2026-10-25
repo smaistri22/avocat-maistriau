@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import contactImg from '../../assets/live/contact_img.png';
 import { LIVE_SITE_DATA } from '../../data/liveSiteData';
 import { AlertTriangle, CheckCircle2, Calendar, Phone, Mail, MapPin } from 'lucide-react';
+import { sendWeb3Form } from '../../lib/sendForm';
 
 interface ContactPageProps {
   onOpenBooking: () => void;
@@ -13,12 +14,40 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
   const [phone, setPhone] = useState('');
   const [subject, setSubject] = useState('Droit de la famille');
   const [message, setMessage] = useState('');
+  const [botcheck, setBotcheck] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (name && email && phone && message) {
+    setErrorMessage('');
+    if (!name || !email || !phone || !message) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    const result = await sendWeb3Form({
+      subject: `Nouveau message via le site – Contact (${subject})`,
+      replyto: email,
+      'Nom complet': name,
+      'E-mail': email,
+      'Téléphone': phone,
+      'Matière concernée': subject,
+      'Message': message,
+      botcheck,
+    });
+    setIsSubmitting(false);
+
+    if (result.success) {
       setSent(true);
+      setName('');
+      setEmail('');
+      setPhone('');
+      setMessage('');
+      setBotcheck(false);
+    } else {
+      setErrorMessage("L'envoi a échoué. Merci de réessayer ou d'écrire directement à p.maistriau@gmail.com.");
     }
   };
 
@@ -121,15 +150,41 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
                 <div className="text-center py-8">
                   <CheckCircle2 className="mx-auto mb-4 h-12 w-12 text-emerald-700" />
                   <h4 className="font-serif text-xl font-bold text-[#181615] mb-2">
-                    Message transmis avec succès
+                    Message envoyé
                   </h4>
-                  <p className="font-serif text-stone-600 text-sm">
-                    Votre formulaire a bien été pris en compte. Maître Philippe Maistriau reviendra vers vous très prochainement.
+                  <p className="font-serif text-stone-600 text-sm mb-6">
+                    Merci, votre message a bien été envoyé. Le cabinet vous répondra dans les meilleurs délais.
                   </p>
+                  <button
+                    type="button"
+                    onClick={() => setSent(false)}
+                    className="text-xs uppercase tracking-wider text-stone-600 hover:text-stone-900 underline font-sans"
+                  >
+                    Envoyer un autre message
+                  </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4 font-serif">
                   
+                  {/* Honeypot anti-spam */}
+                  <input
+                    type="checkbox"
+                    name="botcheck"
+                    checked={botcheck}
+                    onChange={(e) => setBotcheck(e.target.checked)}
+                    className="hidden"
+                    style={{ display: 'none' }}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+
+                  {errorMessage && (
+                    <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2">
+                      <AlertTriangle className="h-4 w-4 shrink-0" />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
+
                   <div>
                     <label className="block text-xs uppercase tracking-wider text-stone-600 mb-1 font-sans font-semibold">
                       Nom complet *
@@ -206,11 +261,16 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full rounded-full bg-[#181615] py-3 text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] hover:bg-stone-800 transition-colors"
+                      disabled={isSubmitting}
+                      className="w-full rounded-full bg-[#181615] py-3 text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] hover:bg-stone-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-sans"
                     >
-                      Transmettre le formulaire
+                      {isSubmitting ? 'Envoi en cours…' : 'Transmettre le formulaire'}
                     </button>
                   </div>
+
+                  <p className="text-center text-xs text-stone-500 font-sans pt-1">
+                    Les données transmises sont utilisées uniquement pour répondre à votre demande, dans le respect du secret professionnel.
+                  </p>
 
                 </form>
               )}

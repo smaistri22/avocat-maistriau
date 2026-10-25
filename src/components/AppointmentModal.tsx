@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Calendar, Clock, MapPin, Video, CheckCircle2, AlertCircle, FileText, Phone, Mail } from 'lucide-react';
 import { CABINET_INFO, PRACTICE_AREAS } from '../data/legalData';
+import { sendWeb3Form } from '../lib/sendForm';
 
 interface AppointmentModalProps {
   isOpen: boolean;
@@ -22,13 +23,15 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
   const [preferredSlot, setPreferredSlot] = useState<'matin' | 'apres-midi'>('matin');
   const [message, setMessage] = useState('');
   const [acknowledgedProDeo, setAcknowledgedProDeo] = useState(false);
+  const [botcheck, setBotcheck] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [referenceNumber, setReferenceNumber] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
 
@@ -42,14 +45,35 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
       return;
     }
 
-    // Generate reference number
+    setIsSubmitting(true);
     const ref = `MAIS-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
-    setReferenceNumber(ref);
-    setSubmitted(true);
+    
+    const result = await sendWeb3Form({
+      subject: 'Demande de rendez-vous via le site',
+      replyto: email,
+      'Numéro de référence': ref,
+      'Type de rendez-vous': appointmentType === 'cabinet' ? 'Au cabinet (Bd Saint-Michel 11)' : 'Visioconférence',
+      'Matière': selectedSubject,
+      'Nom complet': fullName,
+      'E-mail': email,
+      'Téléphone': phone,
+      'Date souhaitée': `${preferredDate} (${preferredSlot === 'matin' ? 'Matinée 9h-12h' : 'Après-midi 14h-18h'})`,
+      'Message': message || 'Non spécifié',
+      botcheck,
+    });
+    setIsSubmitting(false);
+
+    if (result.success) {
+      setReferenceNumber(ref);
+      setSubmitted(true);
+    } else {
+      setErrorMessage("L'envoi a échoué. Merci de réessayer ou d'écrire directement à p.maistriau@gmail.com.");
+    }
   };
 
   const handleResetAndClose = () => {
     setSubmitted(false);
+    setErrorMessage('');
     onClose();
   };
 
@@ -128,6 +152,18 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
         ) : (
           <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6">
             
+            {/* Honeypot anti-spam */}
+            <input
+              type="checkbox"
+              name="botcheck"
+              checked={botcheck}
+              onChange={(e) => setBotcheck(e.target.checked)}
+              className="hidden"
+              style={{ display: 'none' }}
+              tabIndex={-1}
+              autoComplete="off"
+            />
+
             {/* Consultation Fee Pill Alert */}
             <div className="p-3.5 rounded-lg bg-stone-100 border border-stone-200 flex items-center justify-between text-xs text-slate-700">
               <div className="flex items-center gap-2">
@@ -316,18 +352,24 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
             <div className="flex items-center justify-end gap-3 pt-2">
               <button
                 type="button"
+                disabled={isSubmitting}
                 onClick={handleResetAndClose}
-                className="rounded-md border border-stone-300 px-4 py-2.5 text-xs font-semibold text-slate-600 hover:bg-stone-100"
+                className="rounded-md border border-stone-300 px-4 py-2.5 text-xs font-semibold text-slate-600 hover:bg-stone-100 disabled:opacity-50"
               >
                 Annuler
               </button>
               <button
                 type="submit"
-                className="rounded-md bg-[#B58D3D] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-slate-950 hover:bg-[#C89F4E] transition-all shadow-md"
+                disabled={isSubmitting}
+                className="rounded-md bg-[#B58D3D] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-slate-950 hover:bg-[#C89F4E] transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Confirmer la demande
+                {isSubmitting ? 'Envoi en cours…' : 'Confirmer la demande'}
               </button>
             </div>
+
+            <p className="text-center text-xs text-stone-500 font-sans pt-1">
+              Les données transmises sont utilisées uniquement pour répondre à votre demande, dans le respect du secret professionnel.
+            </p>
 
           </form>
         )}
