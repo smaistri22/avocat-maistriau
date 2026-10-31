@@ -26,6 +26,7 @@ export interface Translations {
     prevReviewAria: string;
     nextReviewAria: string;
     goToReviewAria: string;
+    testimonialTags: Record<string, string>;
   };
   about: {
     title: string;
@@ -360,6 +361,15 @@ export const translations: Record<Language, Translations> = {
       prevReviewAria: 'Avis précédent',
       nextReviewAria: 'Avis suivant',
       goToReviewAria: "Aller à l'avis",
+      testimonialTags: {
+        'Droit de la famille & médiation': 'Droit de la famille & médiation',
+        'Divorce & garde d\'enfants': 'Divorce & garde d\'enfants',
+        'Médiation familiale': 'Médiation familiale',
+        'Accompagnement juridique': 'Accompagnement juridique',
+        'Contentieux & conciliation': 'Contentieux & conciliation',
+        'Conseil en succession': 'Conseil en succession',
+        'Droit familial & intégrité': 'Droit familial & intégrité',
+      },
     },
     about: {
       title: 'Qui est Me Maistriau ?',
@@ -773,13 +783,22 @@ export const translations: Record<Language, Translations> = {
       orientationBtn: '3-click legal guidance',
       testimonialsTitle: 'Client Testimonials',
       testimonialsSubtitle: 'Feedback from clients assisted and represented by Maître Philippe Maistriau.',
-      googleBoxText: 'Find all verified reviews on our Google profile',
+      googleBoxText: 'Find all reviews on our Google profile',
       viewGoogleReviews: 'View reviews on Google',
       leaveGoogleReview: 'Leave a review on Google',
       areaLabel: 'Practice area:',
       prevReviewAria: 'Previous review',
       nextReviewAria: 'Next review',
       goToReviewAria: 'Go to review',
+      testimonialTags: {
+        'Droit de la famille & médiation': 'Family law & mediation',
+        'Divorce & garde d\'enfants': 'Divorce & child custody',
+        'Médiation familiale': 'Family mediation',
+        'Accompagnement juridique': 'Legal support',
+        'Contentieux & conciliation': 'Litigation & conciliation',
+        'Conseil en succession': 'Estate & inheritance advice',
+        'Droit familial & intégrité': 'Family law & integrity',
+      },
     },
     about: {
       title: 'About Me Philippe Maistriau',

@@ -37,6 +37,11 @@ export const HomePage: React.FC<HomePageProps> = ({
 
   const currentReview = filteredReviews[activeReviewIndex] || allReviews[0];
 
+  const getTagLabel = (tag?: string) => {
+    if (!tag) return '';
+    return t.home.testimonialTags?.[tag] || tag;
+  };
+
   return (
     <div className="flex flex-col bg-[#F8F5EE]">
       {/* Hero Section matching exact live site */}
@@ -124,7 +129,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 {currentReview.tag && (
                   <>
                     <span>·</span>
-                    <span className="italic text-stone-600">{currentReview.tag}</span>
+                    <span className="italic text-stone-600">{getTagLabel(currentReview.tag)}</span>
                   </>
                 )}
               </div>
@@ -201,7 +206,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                 {r.tag && (
                   <div className="mt-4 pt-3 border-t border-[#EAE4D8] text-xs text-stone-500 font-sans italic">
-                    {t.home.areaLabel} {r.tag}
+                    {t.home.areaLabel} {getTagLabel(r.tag)}
                   </div>
                 )}
               </div>
