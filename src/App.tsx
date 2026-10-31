@@ -15,6 +15,7 @@ import { OrientationPage } from './components/pages/OrientationPage';
 import { FeesPage } from './components/pages/FeesPage';
 import { LiveBookingModal } from './components/LiveBookingModal';
 import { ReviewModal } from './components/ReviewModal';
+import { LanguageProvider } from './i18n/LanguageContext';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<string>('home');
@@ -44,59 +45,61 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F5EE] flex flex-col font-serif text-[#181615] selection:bg-[#181615] selection:text-[#F8F5EE]">
-      {/* Header avec esthétique crème */}
-      <LiveHeader
-        currentPage={currentPage}
-        onNavigate={handleNavigate}
-        onOpenBooking={() => setBookingModalOpen(true)}
-      />
+    <LanguageProvider>
+      <div className="min-h-screen bg-[#F8F5EE] flex flex-col font-serif text-[#181615] selection:bg-[#181615] selection:text-[#F8F5EE]">
+        {/* Header avec esthétique crème */}
+        <LiveHeader
+          currentPage={currentPage}
+          onNavigate={handleNavigate}
+          onOpenBooking={() => setBookingModalOpen(true)}
+        />
 
-      {/* Pages Content */}
-      <main className="flex-1">
-        {currentPage === 'home' && (
-          <HomePage
-            onOpenBooking={() => setBookingModalOpen(true)}
-            onOpenReviewModal={() => setReviewModalOpen(true)}
-            onNavigate={handleNavigate}
-          />
-        )}
+        {/* Pages Content */}
+        <main className="flex-1">
+          {currentPage === 'home' && (
+            <HomePage
+              onOpenBooking={() => setBookingModalOpen(true)}
+              onOpenReviewModal={() => setReviewModalOpen(true)}
+              onNavigate={handleNavigate}
+            />
+          )}
 
-        {currentPage === 'about' && <AboutPage />}
+          {currentPage === 'about' && <AboutPage />}
 
-        {currentPage === 'orientation' && (
-          <OrientationPage onOpenBooking={() => setBookingModalOpen(true)} />
-        )}
+          {currentPage === 'orientation' && (
+            <OrientationPage onOpenBooking={() => setBookingModalOpen(true)} />
+          )}
 
-        {currentPage === 'honoraires' && (
-          <FeesPage onOpenBooking={() => setBookingModalOpen(true)} />
-        )}
+          {currentPage === 'honoraires' && (
+            <FeesPage onOpenBooking={() => setBookingModalOpen(true)} />
+          )}
 
-        {currentPage === 'contact' && (
-          <ContactPage onOpenBooking={() => setBookingModalOpen(true)} />
-        )}
+          {currentPage === 'contact' && (
+            <ContactPage onOpenBooking={() => setBookingModalOpen(true)} />
+          )}
 
-        {currentPage === 'faq' && (
-          <FAQPage onOpenBooking={() => setBookingModalOpen(true)} />
-        )}
+          {currentPage === 'faq' && (
+            <FAQPage onOpenBooking={() => setBookingModalOpen(true)} />
+          )}
 
-        {currentPage === 'mentions' && <MentionsLegalesPage />}
-      </main>
+          {currentPage === 'mentions' && <MentionsLegalesPage />}
+        </main>
 
-      {/* Footer avec mention discrète des partenaires (cognitive-studio.be & Me Ana Ferreira) */}
-      <LiveFooter onNavigate={handleNavigate} />
+        {/* Footer avec mention discrète des partenaires (cognitive-studio.be & Me Ana Ferreira) */}
+        <LiveFooter onNavigate={handleNavigate} />
 
-      {/* Booking Modal */}
-      <LiveBookingModal
-        isOpen={bookingModalOpen}
-        onClose={() => setBookingModalOpen(false)}
-      />
+        {/* Booking Modal */}
+        <LiveBookingModal
+          isOpen={bookingModalOpen}
+          onClose={() => setBookingModalOpen(false)}
+        />
 
-      {/* Review Modal */}
-      <ReviewModal
-        isOpen={reviewModalOpen}
-        onClose={() => setReviewModalOpen(false)}
-      />
-    </div>
+        {/* Review Modal */}
+        <ReviewModal
+          isOpen={reviewModalOpen}
+          onClose={() => setReviewModalOpen(false)}
+        />
+      </div>
+    </LanguageProvider>
   );
 }

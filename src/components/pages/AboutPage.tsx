@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import portraitImg from '../../assets/live/me_maistriau.jpg';
-import { LIVE_SITE_DATA } from '../../data/liveSiteData';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
 import { sendWeb3Form } from '../../lib/sendForm';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export const AboutPage: React.FC = () => {
+  const { language, t } = useLanguage();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -23,12 +24,13 @@ export const AboutPage: React.FC = () => {
 
     setIsSubmitting(true);
     const result = await sendWeb3Form({
-      subject: 'Nouveau message via le site – À propos',
+      subject: language === 'en' ? 'New website message – About page' : 'Nouveau message via le site – À propos',
       replyto: email,
       'Prénom': firstName,
       'Nom': lastName,
       'E-mail': email,
       'Message': message,
+      'Langue': language === 'en' ? 'EN' : 'FR',
       botcheck,
     });
     setIsSubmitting(false);
@@ -41,7 +43,7 @@ export const AboutPage: React.FC = () => {
       setMessage('');
       setBotcheck(false);
     } else {
-      setErrorMessage("L'envoi a échoué. Merci de réessayer ou d'écrire directement à p.maistriau@gmail.com.");
+      setErrorMessage(t.about.form.errorMsg);
     }
   };
 
@@ -55,11 +57,11 @@ export const AboutPage: React.FC = () => {
             {/* Left Column: Text */}
             <div className="lg:col-span-7 space-y-6 text-[#181615]">
               <h1 className="font-serif text-3xl sm:text-5xl font-normal tracking-tight text-[#181615] mb-6">
-                {LIVE_SITE_DATA.about.title}
+                {t.about.title}
               </h1>
 
               <div className="space-y-5 font-serif text-base sm:text-lg text-stone-800 leading-relaxed">
-                {LIVE_SITE_DATA.about.paragraphs.map((p, idx) => (
+                {t.about.paragraphs.map((p, idx) => (
                   <p key={idx}>{p}</p>
                 ))}
               </div>
@@ -85,28 +87,28 @@ export const AboutPage: React.FC = () => {
         <div className="mx-auto max-w-3xl px-6 sm:px-8 text-center">
           
           <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#181615] mb-4">
-            {LIVE_SITE_DATA.about.contactSection.title}
+            {t.about.contactSectionTitle}
           </h2>
           
           <p className="font-serif text-base sm:text-lg text-stone-600 mb-10 max-w-xl mx-auto leading-relaxed">
-            {LIVE_SITE_DATA.about.contactSection.desc}
+            {t.about.contactSectionDesc}
           </p>
 
           {sent ? (
             <div className="p-8 rounded-2xl bg-[#FAF8F3] border border-[#E2DBD0] shadow-sm text-center">
               <CheckCircle2 className="mx-auto mb-4 h-12 w-12 text-emerald-700" />
               <h3 className="font-serif text-2xl font-bold text-[#181615] mb-2">
-                Message envoyé
+                {t.about.form.successTitle}
               </h3>
               <p className="font-serif text-stone-600 mb-6">
-                Merci, votre message a bien été envoyé. Le cabinet vous répondra dans les meilleurs délais.
+                {t.about.form.successMsg}
               </p>
               <button
                 type="button"
                 onClick={() => setSent(false)}
                 className="text-xs uppercase tracking-wider text-stone-600 hover:text-stone-900 underline font-sans"
               >
-                Envoyer un autre message
+                {t.about.form.sendAnother}
               </button>
             </div>
           ) : (
@@ -134,7 +136,7 @@ export const AboutPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-serif text-xs uppercase tracking-wider text-stone-600 mb-1.5 font-sans font-semibold">
-                    Prénom *
+                    {t.about.form.firstName}
                   </label>
                   <input
                     type="text"
@@ -147,7 +149,7 @@ export const AboutPage: React.FC = () => {
 
                 <div>
                   <label className="block font-serif text-xs uppercase tracking-wider text-stone-600 mb-1.5 font-sans font-semibold">
-                    Nom *
+                    {t.about.form.lastName}
                   </label>
                   <input
                     type="text"
@@ -161,7 +163,7 @@ export const AboutPage: React.FC = () => {
 
               <div>
                 <label className="block font-serif text-xs uppercase tracking-wider text-stone-600 mb-1.5 font-sans font-semibold">
-                  E-mail *
+                  {t.about.form.email}
                 </label>
                 <input
                   type="email"
@@ -174,7 +176,7 @@ export const AboutPage: React.FC = () => {
 
               <div>
                 <label className="block font-serif text-xs uppercase tracking-wider text-stone-600 mb-1.5 font-sans font-semibold">
-                  Message *
+                  {t.about.form.message}
                 </label>
                 <textarea
                   rows={4}
@@ -189,14 +191,14 @@ export const AboutPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="rounded-full bg-[#181615] px-8 py-3 text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] transition-all hover:bg-stone-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="rounded-full bg-[#181615] px-8 py-3 text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] transition-all hover:bg-stone-800 disabled:opacity-50 disabled:cursor-not-allowed font-sans"
                 >
-                  {isSubmitting ? 'Envoi en cours…' : 'Envoyer'}
+                  {isSubmitting ? t.about.form.submittingBtn : t.about.form.submitBtn}
                 </button>
               </div>
 
               <p className="text-center text-xs text-stone-500 font-sans pt-1">
-                Les données transmises sont utilisées uniquement pour répondre à votre demande, dans le respect du secret professionnel.
+                {t.about.form.gdpr}
               </p>
 
             </form>

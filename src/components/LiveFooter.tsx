@@ -2,12 +2,15 @@ import React from 'react';
 import footerLogo from '../assets/live/asset_1.jpg';
 import { LIVE_SITE_DATA } from '../data/liveSiteData';
 import { ExternalLink } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface LiveFooterProps {
   onNavigate: (page: string) => void;
 }
 
 export const LiveFooter: React.FC<LiveFooterProps> = ({ onNavigate }) => {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-[#242120] text-[#E5E0D6] pt-14 pb-12 text-sm border-t border-stone-800">
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
@@ -57,17 +60,17 @@ export const LiveFooter: React.FC<LiveFooterProps> = ({ onNavigate }) => {
           {/* Horaires d'ouverture (3 cols) */}
           <div className="md:col-span-3 space-y-1.5 text-xs sm:text-sm font-serif">
             <h4 className="font-serif text-base font-bold text-white mb-2">
-              Horaires d'ouverture
+              {t.footer.openingHoursTitle}
             </h4>
-            <div>{LIVE_SITE_DATA.contact.openingHours.days}</div>
-            <div className="text-stone-300">{LIVE_SITE_DATA.contact.openingHours.morning}</div>
-            <div className="text-stone-300">{LIVE_SITE_DATA.contact.openingHours.afternoon}</div>
+            <div>{t.footer.days}</div>
+            <div className="text-stone-300">{t.footer.morning}</div>
+            <div className="text-stone-300">{t.footer.afternoon}</div>
           </div>
 
           {/* Réseaux sociaux & Accès rapide (3 cols) */}
           <div className="md:col-span-3 space-y-2 text-xs sm:text-sm font-serif">
             <h4 className="font-serif text-base font-bold text-white mb-2">
-              Nous suivre
+              {t.footer.followUsTitle}
             </h4>
             <div className="flex gap-4 text-xs font-serif">
               {LIVE_SITE_DATA.contact.socialLinks.map((link) => (
@@ -84,7 +87,7 @@ export const LiveFooter: React.FC<LiveFooterProps> = ({ onNavigate }) => {
             </div>
 
             <div className="pt-3 text-xs text-stone-400 font-serif">
-              Barreau de Bruxelles · Consultations sur rendez-vous
+              {t.footer.subtext}
             </div>
           </div>
 
@@ -93,7 +96,7 @@ export const LiveFooter: React.FC<LiveFooterProps> = ({ onNavigate }) => {
         {/* Discreet Partners Mention en bas de page */}
         <div className="py-4 border-b border-stone-800/70 flex flex-wrap items-center justify-between gap-3 text-xs text-stone-400 font-serif">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-stone-500 font-sans uppercase text-[11px] tracking-wider">Partenaires :</span>
+            <span className="text-stone-500 font-sans uppercase text-[11px] tracking-wider">{t.footer.partnersLabel}</span>
             <a
               href="https://cognitive-studio.be"
               target="_blank"
@@ -127,18 +130,18 @@ export const LiveFooter: React.FC<LiveFooterProps> = ({ onNavigate }) => {
               onClick={() => onNavigate('mentions')}
               className="hover:text-white underline underline-offset-4 transition-colors text-xs"
             >
-              Mentions Légales
+              {t.footer.legalNoticeLink}
             </button>
             <span>·</span>
             <button
               onClick={() => onNavigate('honoraires')}
               className="hover:text-white underline underline-offset-4 transition-colors text-xs"
             >
-              Transparence des honoraires
+              {t.footer.feeTransparencyLink}
             </button>
           </div>
           <div>
-            © 2026 Cabinet d'Avocat Philippe Maistriau. All rights reserved.
+            {t.footer.copyright}
           </div>
         </div>
 

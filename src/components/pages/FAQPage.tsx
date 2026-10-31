@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { LIVE_SITE_DATA } from '../../data/liveSiteData';
 import { ChevronDown, Calendar, Phone } from 'lucide-react';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface FAQPageProps {
   onOpenBooking: () => void;
 }
 
 export const FAQPage: React.FC<FAQPageProps> = ({ onOpenBooking }) => {
+  const { t } = useLanguage();
   const [openItems, setOpenItems] = useState<string[]>([
     'faq-1',
     'faq-5',
@@ -26,16 +28,16 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenBooking }) => {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="font-serif text-3xl sm:text-5xl font-normal text-[#181615] mb-4">
-            Foire aux Questions
+            {t.faq.pageTitle}
           </h1>
           <p className="font-serif text-base sm:text-lg text-stone-600 max-w-xl mx-auto">
-            Trouvez les réponses détaillées à vos questions relatives aux honoraires, au droit de la famille et aux baux à loyer.
+            {t.faq.pageSubtitle}
           </p>
         </div>
 
-        {/* 3 FAQ Groups */}
+        {/* FAQ Groups */}
         <div className="space-y-12">
-          {LIVE_SITE_DATA.faqGroups.map((group, groupIdx) => (
+          {t.faq.groups.map((group, groupIdx) => (
             <div key={groupIdx} className="space-y-4">
               
               <h2 className="font-serif text-2xl font-semibold text-[#181615] pb-2 border-b border-[#E2DBD0]">
@@ -84,22 +86,22 @@ export const FAQPage: React.FC<FAQPageProps> = ({ onOpenBooking }) => {
         {/* Bottom CTA Box */}
         <div className="mt-16 rounded-2xl bg-[#FAF8F3] border border-[#E2DBD0] p-8 text-center space-y-4">
           <h3 className="font-serif text-2xl font-normal text-[#181615]">
-            Une question reste sans réponse ?
+            {t.faq.bottomTitle}
           </h3>
           <p className="font-serif text-sm text-stone-600 max-w-md mx-auto">
-            Contactez directement le cabinet pour une consultation d'orientation personnalisée.
+            {t.faq.bottomSubtitle}
           </p>
           <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
             <button
               onClick={onOpenBooking}
-              className="flex items-center gap-2 rounded-full bg-[#181615] px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] hover:bg-stone-800"
+              className="flex items-center gap-2 rounded-full bg-[#181615] px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] hover:bg-stone-800 font-sans"
             >
               <Calendar className="h-4 w-4" />
-              <span>Prendre rendez-vous (125 € TTC)</span>
+              <span>{t.faq.bookBtn}</span>
             </button>
             <a
               href={`tel:${LIVE_SITE_DATA.contact.phone.replace(/\s+/g, '')}`}
-              className="flex items-center gap-2 rounded-full border border-stone-400 bg-white px-6 py-3 text-xs font-semibold uppercase tracking-wider text-stone-900 hover:border-stone-900"
+              className="flex items-center gap-2 rounded-full border border-stone-400 bg-white px-6 py-3 text-xs font-semibold uppercase tracking-wider text-stone-900 hover:border-stone-900 font-sans"
             >
               <Phone className="h-4 w-4" />
               <span>{LIVE_SITE_DATA.contact.phone}</span>

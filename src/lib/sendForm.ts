@@ -17,6 +17,7 @@ export async function sendWeb3Form(payload: Record<string, any>): Promise<SendFo
         access_key: WEB3FORMS_ACCESS_KEY,
         from_name: 'Site avocat-maistriau.com',
         botcheck: false,
+        'Langue': payload.Langue || 'FR',
         ...payload,
       }),
     });

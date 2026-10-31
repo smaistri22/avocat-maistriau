@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, ExternalLink, Star } from 'lucide-react';
 import { LIVE_SITE_DATA } from '../data/liveSiteData';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface ReviewModalProps {
   isOpen: boolean;
@@ -8,6 +9,8 @@ interface ReviewModalProps {
 }
 
 export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
+  const { t } = useLanguage();
+
   if (!isOpen) return null;
 
   return (
@@ -17,20 +20,20 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => 
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 text-stone-400 hover:text-stone-900 transition-colors"
-          aria-label="Fermer"
+          aria-label={t.reviewModal.closeBtn}
         >
           <X className="h-5 w-5" />
         </button>
 
         <div className="mb-6">
           <span className="text-xs uppercase tracking-wider text-stone-400 font-sans block mb-1">
-            Témoignage
+            {t.reviewModal.tag}
           </span>
           <h3 className="text-2xl sm:text-3xl font-normal text-[#181615]">
-            Laisser un avis
+            {t.reviewModal.title}
           </h3>
           <p className="text-xs sm:text-sm text-stone-600 mt-2 font-sans leading-relaxed">
-            Votre retour d'expérience est précieux pour faire connaître la qualité de l'accompagnement de Maître Philippe Maistriau.
+            {t.reviewModal.desc}
           </p>
         </div>
 
@@ -41,7 +44,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => 
             ))}
           </div>
           <p className="text-xs text-stone-600 leading-relaxed">
-            Les avis sont collectés directement sur notre fiche Google Maps afin de garantir leur consultation publique et transparente.
+            {t.reviewModal.boxText}
           </p>
         </div>
 
@@ -53,7 +56,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => 
             onClick={onClose}
             className="w-full flex items-center justify-center gap-2 rounded-full bg-[#181615] text-[#F8F5EE] py-3 text-xs font-semibold uppercase tracking-wider hover:bg-stone-800 transition-colors shadow-sm"
           >
-            <span>Laisser votre avis sur Google</span>
+            <span>{t.reviewModal.leaveReviewBtn}</span>
             <ExternalLink className="h-3.5 w-3.5 opacity-80" />
           </a>
 
@@ -64,7 +67,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => 
             onClick={onClose}
             className="w-full flex items-center justify-center gap-2 rounded-full border border-stone-400 bg-white text-stone-800 py-3 text-xs font-semibold uppercase tracking-wider hover:border-stone-900 transition-colors shadow-xs"
           >
-            <span>Voir les avis sur Google</span>
+            <span>{t.reviewModal.viewReviewsBtn}</span>
             <ExternalLink className="h-3.5 w-3.5 opacity-60" />
           </a>
         </div>
@@ -75,7 +78,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => 
             onClick={onClose}
             className="text-xs font-sans text-stone-500 hover:text-stone-900 transition-colors"
           >
-            Fermer
+            {t.reviewModal.closeBtn}
           </button>
         </div>
 

@@ -4,6 +4,7 @@ import heroImg from '../../assets/live/hero_img.webp';
 import { LIVE_SITE_DATA, Testimonial } from '../../data/liveSiteData';
 import { OrientationTool } from '../OrientationTool';
 import { FeesSection } from '../FeesSection';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface HomePageProps {
   onOpenBooking: () => void;
@@ -18,6 +19,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 }) => {
   const [activeReviewIndex, setActiveReviewIndex] = useState(0);
   const [filterTag, setFilterTag] = useState<string>('all');
+  const { t } = useLanguage();
 
   const allReviews: Testimonial[] = LIVE_SITE_DATA.reviews;
 
@@ -52,7 +54,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         {/* Hero Content centered */}
         <div className="relative z-10 mx-auto max-w-5xl px-6 py-20 text-center">
           <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-normal leading-[1.18] tracking-tight text-white max-w-4xl mx-auto drop-shadow-sm [text-wrap:balance]">
-            {LIVE_SITE_DATA.heroHeadline}
+            {t.home.heroHeadline}
           </h1>
 
           <div className="mt-8 flex justify-center gap-4 flex-wrap font-sans">
@@ -60,13 +62,13 @@ export const HomePage: React.FC<HomePageProps> = ({
               onClick={onOpenBooking}
               className="rounded-full bg-white/95 px-8 py-3.5 text-xs font-semibold uppercase tracking-widest text-neutral-900 transition-all hover:bg-white hover:shadow-xl active:scale-95"
             >
-              Prendre rendez-vous
+              {t.home.bookAppointment}
             </button>
             <button
               onClick={() => onNavigate('orientation')}
               className="rounded-full bg-white/10 backdrop-blur-md border border-white/30 px-6 py-3.5 text-xs font-semibold uppercase tracking-widest text-white transition-all hover:bg-white/20 active:scale-95"
             >
-              Orientation en 3 clics
+              {t.home.orientationBtn}
             </button>
           </div>
         </div>
@@ -79,17 +81,17 @@ export const HomePage: React.FC<HomePageProps> = ({
           {/* Section Header */}
           <div className="mb-8">
             <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#181615] mb-2">
-              Témoignages de clients
+              {t.home.testimonialsTitle}
             </h2>
             <p className="font-serif text-sm sm:text-base text-stone-600 max-w-lg mx-auto">
-              Retours d'expérience de justiciables accompagnés par Maître Philippe Maistriau.
+              {t.home.testimonialsSubtitle}
             </p>
           </div>
 
           {/* Encart discret : Fiche Google */}
           <div className="mb-10 max-w-2xl mx-auto rounded-xl bg-[#FAF8F3] border border-[#E2DBD0] p-6 shadow-xs text-center font-serif">
             <p className="text-base text-stone-800 mb-4">
-              Retrouvez l'ensemble des avis sur notre fiche Google
+              {t.home.googleBoxText}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3 font-sans">
               <a
@@ -98,7 +100,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-stone-400 bg-white px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-stone-800 hover:border-stone-900 transition-colors shadow-xs"
               >
-                <span>Voir les avis sur Google</span>
+                <span>{t.home.viewGoogleReviews}</span>
                 <ExternalLink className="h-3.5 w-3.5 opacity-60" />
               </a>
 
@@ -108,13 +110,13 @@ export const HomePage: React.FC<HomePageProps> = ({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full bg-[#181615] px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] hover:bg-stone-800 transition-colors shadow-xs"
               >
-                <span>Laisser un avis sur Google</span>
+                <span>{t.home.leaveGoogleReview}</span>
                 <ExternalLink className="h-3.5 w-3.5 opacity-80" />
               </a>
             </div>
           </div>
 
-          {/* Testimonial Display Carousel Card */}
+          {/* Testimonial Display Carousel Card (Client quotes remain in original language) */}
           <div className="relative mx-auto max-w-3xl rounded-2xl bg-[#FAF8F3] p-8 sm:p-12 shadow-sm border border-[#E2DBD0] mb-8 transition-all">
             <div className="flex items-center justify-between pb-4 mb-4 border-b border-[#EAE4D8] text-xs font-sans text-stone-500">
               <div className="flex items-center gap-2">
@@ -146,7 +148,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               <button
                 onClick={handlePrev}
                 className="p-2 rounded-full text-stone-500 hover:text-stone-950 hover:bg-[#EFEAE0] transition-colors"
-                aria-label="Avis précédent"
+                aria-label={t.home.prevReviewAria}
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
@@ -159,7 +161,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     className={`h-2 rounded-full transition-all ${
                       idx === activeReviewIndex ? 'w-6 bg-[#181615]' : 'w-2 bg-stone-300 hover:bg-stone-400'
                     }`}
-                    aria-label={`Aller à l'avis ${idx + 1}`}
+                    aria-label={`${t.home.goToReviewAria} ${idx + 1}`}
                   />
                 ))}
               </div>
@@ -167,7 +169,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               <button
                 onClick={handleNext}
                 className="p-2 rounded-full text-stone-500 hover:text-stone-950 hover:bg-[#EFEAE0] transition-colors"
-                aria-label="Avis suivant"
+                aria-label={t.home.nextReviewAria}
               >
                 <ChevronRight className="h-5 w-5" />
               </button>
@@ -199,7 +201,7 @@ export const HomePage: React.FC<HomePageProps> = ({
 
                 {r.tag && (
                   <div className="mt-4 pt-3 border-t border-[#EAE4D8] text-xs text-stone-500 font-sans italic">
-                    Domaine : {r.tag}
+                    {t.home.areaLabel} {r.tag}
                   </div>
                 )}
               </div>
@@ -214,7 +216,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full bg-[#181615] px-7 py-3 text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] transition-all hover:bg-stone-800 active:scale-95 shadow-xs"
             >
-              <span>Laisser un avis sur Google</span>
+              <span>{t.home.leaveGoogleReview}</span>
               <ExternalLink className="h-3.5 w-3.5 opacity-80" />
             </a>
 
@@ -224,7 +226,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 rounded-full border border-stone-400 bg-white px-6 py-3 text-xs font-semibold uppercase tracking-wider text-stone-800 transition-all hover:border-stone-900 active:scale-95 shadow-xs"
             >
-              <span>Voir les avis sur Google</span>
+              <span>{t.home.viewGoogleReviews}</span>
               <ExternalLink className="h-3.5 w-3.5 opacity-60" />
             </a>
           </div>

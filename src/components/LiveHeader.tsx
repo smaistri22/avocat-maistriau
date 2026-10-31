@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Menu, X, Globe, Calendar, Compass } from 'lucide-react';
+import { Menu, X, Globe } from 'lucide-react';
 import { LIVE_SITE_DATA } from '../data/liveSiteData';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface LiveHeaderProps {
   currentPage: string;
@@ -14,14 +15,15 @@ export const LiveHeader: React.FC<LiveHeaderProps> = ({
   onOpenBooking,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
 
   const navItems = [
-    { id: 'home', label: 'Accueil' },
-    { id: 'about', label: 'À propos' },
-    { id: 'orientation', label: 'Orientation (3 clics)' },
-    { id: 'honoraires', label: 'Honoraires' },
-    { id: 'contact', label: 'Contact' },
-    { id: 'faq', label: 'FAQ' },
+    { id: 'home', label: t.header.nav.home },
+    { id: 'about', label: t.header.nav.about },
+    { id: 'orientation', label: t.header.nav.orientation },
+    { id: 'honoraires', label: t.header.nav.honoraires },
+    { id: 'contact', label: t.header.nav.contact },
+    { id: 'faq', label: t.header.nav.faq },
   ];
 
   return (
@@ -53,28 +55,71 @@ export const LiveHeader: React.FC<LiveHeaderProps> = ({
             );
           })}
 
-          {/* Language Indicator */}
-          <div className="flex items-center gap-1.5 text-xs text-stone-500 border-l border-[#E2DBD0] pl-4">
+          {/* Language Switcher FR | EN */}
+          <div className="flex items-center gap-2 text-xs border-l border-[#E2DBD0] pl-4 font-sans font-semibold">
             <Globe className="h-3.5 w-3.5 text-stone-400" />
-            <span className="font-serif text-sm">Français</span>
+            <button
+              type="button"
+              onClick={() => setLanguage('fr')}
+              className={`transition-colors text-xs tracking-wider ${
+                language === 'fr'
+                  ? 'text-[#181615] font-bold underline underline-offset-4 decoration-2 decoration-[#181615]'
+                  : 'text-stone-400 hover:text-stone-700'
+              }`}
+              aria-label="Passer en français"
+            >
+              FR
+            </button>
+            <span className="text-stone-300">|</span>
+            <button
+              type="button"
+              onClick={() => setLanguage('en')}
+              className={`transition-colors text-xs tracking-wider ${
+                language === 'en'
+                  ? 'text-[#181615] font-bold underline underline-offset-4 decoration-2 decoration-[#181615]'
+                  : 'text-stone-400 hover:text-stone-700'
+              }`}
+              aria-label="Switch to English"
+            >
+              EN
+            </button>
           </div>
 
           {/* Rendez-vous Primary Action */}
           <button
             onClick={onOpenBooking}
-            className="rounded-full bg-[#181615] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] transition-all hover:bg-stone-800 active:scale-[0.98] shadow-sm"
+            className="rounded-full bg-[#181615] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] transition-all hover:bg-stone-800 active:scale-[0.98] shadow-sm font-sans"
           >
-            Rendez-vous
+            {t.header.bookingBtn}
           </button>
         </nav>
 
-        {/* Mobile Hamburger */}
+        {/* Mobile Hamburger & Actions */}
         <div className="flex items-center gap-3 lg:hidden">
+          {/* Mobile Language Switcher */}
+          <div className="flex items-center gap-1.5 text-xs font-sans font-semibold text-stone-700 mr-1 bg-white/70 px-2.5 py-1 rounded-full border border-[#E2DBD0]">
+            <button
+              type="button"
+              onClick={() => setLanguage('fr')}
+              className={language === 'fr' ? 'font-bold text-[#181615] underline decoration-[#181615]' : 'text-stone-400'}
+            >
+              FR
+            </button>
+            <span className="text-stone-300">|</span>
+            <button
+              type="button"
+              onClick={() => setLanguage('en')}
+              className={language === 'en' ? 'font-bold text-[#181615] underline decoration-[#181615]' : 'text-stone-400'}
+            >
+              EN
+            </button>
+          </div>
+
           <button
             onClick={onOpenBooking}
-            className="rounded-full bg-[#181615] px-3.5 py-1.5 text-xs font-semibold text-[#F8F5EE] uppercase tracking-wider"
+            className="rounded-full bg-[#181615] px-3.5 py-1.5 text-xs font-semibold text-[#F8F5EE] uppercase tracking-wider font-sans"
           >
-            RDV
+            {t.header.bookingBtnShort}
           </button>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -112,13 +157,36 @@ export const LiveHeader: React.FC<LiveHeaderProps> = ({
                   setMobileMenuOpen(false);
                   onOpenBooking();
                 }}
-                className="w-full rounded-full bg-[#181615] py-3 text-center text-xs font-semibold uppercase tracking-wider text-[#F8F5EE]"
+                className="w-full rounded-full bg-[#181615] py-3 text-center text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] font-sans"
               >
-                Prendre Rendez-vous
+                {t.header.bookingBtn}
               </button>
-              <div className="flex items-center justify-center gap-1.5 text-xs text-stone-500 py-1">
-                <Globe className="h-3.5 w-3.5" />
-                <span>Français</span>
+              
+              {/* Language Switcher inside mobile drawer */}
+              <div className="flex items-center justify-center gap-3 text-xs border border-[#E2DBD0] rounded-full py-2 px-4 bg-white font-sans mt-1">
+                <Globe className="h-3.5 w-3.5 text-stone-400" />
+                <button
+                  type="button"
+                  onClick={() => setLanguage('fr')}
+                  className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${
+                    language === 'fr'
+                      ? 'bg-[#181615] text-[#F8F5EE]'
+                      : 'text-stone-600 hover:text-stone-900'
+                  }`}
+                >
+                  Français (FR)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLanguage('en')}
+                  className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${
+                    language === 'en'
+                      ? 'bg-[#181615] text-[#F8F5EE]'
+                      : 'text-stone-600 hover:text-stone-900'
+                  }`}
+                >
+                  English (EN)
+                </button>
               </div>
             </div>
           </div>

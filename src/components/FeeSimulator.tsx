@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Calculator, Clock, HelpCircle, CheckCircle2, Shield, ArrowRight } from 'lucide-react';
+import { Calculator, CheckCircle2, ArrowRight } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface FeeSimulatorProps {
   onOpenBooking: () => void;
 }
 
 export const FeeSimulator: React.FC<FeeSimulatorProps> = ({ onOpenBooking }) => {
+  const { language, t } = useLanguage();
   const [hours, setHours] = useState<number>(4);
 
   const BASE_RATE_HTVA = 150; // 150 € HTVA / heure
@@ -19,12 +21,18 @@ export const FeeSimulator: React.FC<FeeSimulatorProps> = ({ onOpenBooking }) => 
   const totalTTC = totalHTVA + vatAmount;
 
   const presets = [
-    { label: 'Conseil & Mise en demeure', hours: 2 },
-    { label: 'Litige locatif (Bail)', hours: 4 },
-    { label: 'Divorce consentement mutuel', hours: 6 },
-    { label: 'Procédure Tribunal de la Famille', hours: 10 },
-    { label: 'Contentieux successoral complexe', hours: 18 },
+    { label: t.simulator.presets.advice, hours: 2 },
+    { label: t.simulator.presets.bail, hours: 4 },
+    { label: t.simulator.presets.divorceConsent, hours: 6 },
+    { label: t.simulator.presets.familyCourt, hours: 10 },
+    { label: t.simulator.presets.inheritance, hours: 18 },
   ];
+
+  const formatEuro = (amount: number) => {
+    return language === 'en'
+      ? `€ ${amount.toFixed(2)}`
+      : `${amount.toFixed(2)} €`;
+  };
 
   return (
     <div className="rounded-2xl bg-[#FAF8F3] border border-[#E2DBD0] p-6 sm:p-8 lg:p-10 shadow-sm font-serif">
@@ -34,17 +42,17 @@ export const FeeSimulator: React.FC<FeeSimulatorProps> = ({ onOpenBooking }) => 
         <div>
           <div className="flex items-center gap-2 text-stone-600 text-xs font-sans uppercase tracking-wider font-semibold mb-1">
             <Calculator className="h-4 w-4 text-stone-700" />
-            <span>Simulateur d'honoraires transparent</span>
+            <span>{t.simulator.badge}</span>
           </div>
           <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#181615]">
-            Simulation du coût horaire
+            {t.simulator.title}
           </h3>
         </div>
 
         <div className="text-right">
-          <span className="text-xs font-sans text-stone-500 block">Tarif de référence</span>
+          <span className="text-xs font-sans text-stone-500 block">{t.simulator.referenceRateLabel}</span>
           <span className="font-serif text-lg font-bold text-[#181615]">
-            150 € <span className="text-xs font-sans font-normal text-stone-500">HTVA / h + 10% frais admin</span>
+            {t.simulator.referenceRateValue}
           </span>
         </div>
       </div>
@@ -57,7 +65,7 @@ export const FeeSimulator: React.FC<FeeSimulatorProps> = ({ onOpenBooking }) => 
           {/* Preset Buttons */}
           <div>
             <label className="block text-xs uppercase tracking-wider text-stone-600 mb-2 font-sans font-semibold">
-              Scénarios types fréquents :
+              {t.simulator.presetsLabel}
             </label>
             <div className="flex flex-wrap gap-2">
               {presets.map((p) => (
@@ -81,7 +89,7 @@ export const FeeSimulator: React.FC<FeeSimulatorProps> = ({ onOpenBooking }) => 
           <div className="bg-white p-5 rounded-xl border border-[#E2DBD0] space-y-4">
             <div className="flex items-center justify-between">
               <label htmlFor="hours-slider" className="text-sm font-semibold text-[#181615] font-sans">
-                Nombre d'heures estimées :
+                {t.simulator.hoursLabel}
               </label>
               <div className="flex items-center gap-2">
                 <input
@@ -92,7 +100,9 @@ export const FeeSimulator: React.FC<FeeSimulatorProps> = ({ onOpenBooking }) => 
                   onChange={(e) => setHours(Math.max(1, parseInt(e.target.value) || 1))}
                   className="w-16 rounded-md border border-[#D5CDBD] text-center p-1.5 font-sans font-bold text-base text-[#181615] focus:outline-none focus:border-stone-900"
                 />
-                <span className="text-sm font-sans text-stone-500">heure{hours > 1 ? 's' : ''}</span>
+                <span className="text-sm font-sans text-stone-500">
+                  {hours > 1 ? t.simulator.hoursUnit : t.simulator.hourUnit}
+                </span>
               </div>
             </div>
 
@@ -107,11 +117,11 @@ export const FeeSimulator: React.FC<FeeSimulatorProps> = ({ onOpenBooking }) => 
             />
 
             <div className="flex justify-between text-[11px] font-sans text-stone-400">
-              <span>1 heure</span>
-              <span>10 heures</span>
-              <span>20 heures</span>
-              <span>30 heures</span>
-              <span>40+ heures</span>
+              <span>{t.simulator.hoursScale1}</span>
+              <span>{t.simulator.hoursScale10}</span>
+              <span>{t.simulator.hoursScale20}</span>
+              <span>{t.simulator.hoursScale30}</span>
+              <span>{t.simulator.hoursScale40}</span>
             </div>
           </div>
 
@@ -119,21 +129,15 @@ export const FeeSimulator: React.FC<FeeSimulatorProps> = ({ onOpenBooking }) => 
           <div className="space-y-3 text-xs text-stone-600 font-sans leading-relaxed">
             <div className="flex items-start gap-2">
               <CheckCircle2 className="h-4 w-4 text-stone-800 shrink-0 mt-0.5" />
-              <span>
-                <strong>Frais administratifs de 10% :</strong> couvrent l'ouverture du dossier, les correspondances, l'archivage sécurisé et le secrétariat juridique.
-              </span>
+              <span>{t.simulator.notes.admin}</span>
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle2 className="h-4 w-4 text-stone-800 shrink-0 mt-0.5" />
-              <span>
-                <strong>TVA légale de 21% :</strong> applicable en Belgique sur toutes les prestations juridiques d'avocat depuis 2014.
-              </span>
+              <span>{t.simulator.notes.vat}</span>
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle2 className="h-4 w-4 text-stone-800 shrink-0 mt-0.5" />
-              <span>
-                <strong>1ère consultation d'orientation :</strong> reste toujours au tarif forfaitaire unique de <strong>125 € TTC</strong> (non soumise au taux horaire).
-              </span>
+              <span>{t.simulator.notes.firstConsult}</span>
             </div>
           </div>
 
@@ -144,61 +148,63 @@ export const FeeSimulator: React.FC<FeeSimulatorProps> = ({ onOpenBooking }) => 
           
           <div className="border-b border-stone-800 pb-3">
             <span className="text-[11px] uppercase tracking-wider text-amber-400 font-sans font-semibold block">
-              Détail de l'estimation
+              {t.simulator.breakdownTitle}
             </span>
             <div className="font-serif text-lg font-bold text-white">
-              Pour {hours} heure{hours > 1 ? 's' : ''} de travail
+              {t.simulator.breakdownFor
+                .replace('{hours}', hours.toString())
+                .replace('{s}', hours > 1 ? (language === 'fr' ? 's' : 's') : '')}
             </div>
           </div>
 
           <div className="space-y-3 text-xs sm:text-sm font-sans">
             <div className="flex justify-between text-stone-300">
-              <span>Honoraires de base ({hours}h × 150 €) :</span>
-              <span className="tabular-nums font-semibold text-white">{baseFees.toFixed(2)} €</span>
+              <span>{t.simulator.baseFeesLabel.replace('{hours}', hours.toString())}</span>
+              <span className="tabular-nums font-semibold text-white">{formatEuro(baseFees)}</span>
             </div>
 
             <div className="flex justify-between text-stone-300">
-              <span>Frais administratifs (+10%) :</span>
-              <span className="tabular-nums font-semibold text-white">{adminFees.toFixed(2)} €</span>
+              <span>{t.simulator.adminFeesLabel}</span>
+              <span className="tabular-nums font-semibold text-white">{formatEuro(adminFees)}</span>
             </div>
 
             <div className="pt-2 border-t border-stone-800 flex justify-between text-stone-200 font-semibold">
-              <span>Sous-total HTVA (165 € / h) :</span>
-              <span className="tabular-nums text-white">{totalHTVA.toFixed(2)} €</span>
+              <span>{t.simulator.subtotalLabel}</span>
+              <span className="tabular-nums text-white">{formatEuro(totalHTVA)}</span>
             </div>
 
             <div className="flex justify-between text-stone-400 text-xs">
-              <span>TVA belge (21%) :</span>
-              <span className="tabular-nums">{vatAmount.toFixed(2)} €</span>
+              <span>{t.simulator.vatLabel}</span>
+              <span className="tabular-nums">{formatEuro(vatAmount)}</span>
             </div>
 
             {/* Total Highlight */}
             <div className="pt-3 border-t border-stone-700 flex items-baseline justify-between text-[#F8F5EE]">
               <div>
                 <span className="text-xs uppercase tracking-wider font-semibold block text-amber-400">
-                  Total estimé TTC :
+                  {t.simulator.totalLabel}
                 </span>
                 <span className="text-[10px] text-stone-400 font-normal">
-                  (~{(totalTTC / hours).toFixed(2)} € TTC / h)
+                  {t.simulator.approxHourlyLabel.replace('{rate}', (totalTTC / hours).toFixed(2))}
                 </span>
               </div>
               <div className="text-right">
                 <span className="font-serif text-3xl font-bold text-white tabular-nums">
-                  {totalTTC.toFixed(2)} €
+                  {formatEuro(totalTTC)}
                 </span>
               </div>
             </div>
           </div>
 
           <div className="pt-3 border-t border-stone-800 text-[11px] font-sans text-stone-400 leading-snug">
-            Ce simulateur fournit une estimation indicative. Une convention d'honoraires écrite détaillée est systématiquement établie avec vous lors de l'ouverture du dossier.
+            {t.simulator.disclaimer}
           </div>
 
           <button
             onClick={onOpenBooking}
             className="w-full flex items-center justify-center gap-2 rounded-full bg-white text-[#181615] py-3 text-xs font-semibold uppercase tracking-wider font-sans hover:bg-stone-200 transition-colors shadow-md"
           >
-            <span>Prendre consultation (125 € TTC)</span>
+            <span>{t.simulator.bookBtn}</span>
             <ArrowRight className="h-4 w-4" />
           </button>
 
