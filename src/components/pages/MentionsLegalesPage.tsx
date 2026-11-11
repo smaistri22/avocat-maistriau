@@ -39,7 +39,16 @@ export const MentionsLegalesPage: React.FC = () => {
             <div>
               <span className="text-stone-500 text-xs block font-sans">{t.mentions.phoneEmailLabel}</span>
               <strong>{LIVE_SITE_DATA.contact.phone}</strong>
-              <div className="text-xs text-stone-600 font-sans">{LIVE_SITE_DATA.contact.email}</div>
+              <div className="text-xs text-stone-600 font-sans">
+                <a href={`mailto:${LIVE_SITE_DATA.contact.email}`} className="hover:underline">
+                  {LIVE_SITE_DATA.contact.email}
+                </a>
+              </div>
+              <div className="text-xs text-stone-600 font-sans">
+                <a href={`mailto:${LIVE_SITE_DATA.contact.emailSecondary}`} className="hover:underline">
+                  {LIVE_SITE_DATA.contact.emailSecondary}
+                </a>
+              </div>
             </div>
           </div>
         </div>

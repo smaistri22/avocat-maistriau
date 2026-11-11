@@ -130,6 +130,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
                 </a>
               </div>
               <div className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-stone-500" />
+                <a href={`mailto:${LIVE_SITE_DATA.contact.emailSecondary}`} className="underline">
+                  {LIVE_SITE_DATA.contact.emailSecondary}
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-stone-500" />
                 <a href={`tel:${LIVE_SITE_DATA.contact.phone.replace(/\s+/g, '')}`}>
                   {LIVE_SITE_DATA.contact.phone}

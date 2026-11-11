@@ -33,6 +33,7 @@ export const LIVE_SITE_DATA = {
     postalCodeCity: "1040 Etterbeek",
     country: "Belgique",
     email: "p.maistriau@gmail.com",
+    emailSecondary: "info@avocat-maistriau.com",
     phone: "+32 486 06 25 78",
     vat: "BE 0838.796.810",
     openingHours: {

@@ -46,6 +46,14 @@ export const LiveFooter: React.FC<LiveFooterProps> = ({ onNavigate }) => {
             </div>
             <div>
               <a
+                href={`mailto:${LIVE_SITE_DATA.contact.emailSecondary}`}
+                className="text-[#E5E0D6] hover:text-white underline underline-offset-4 transition-colors"
+              >
+                {LIVE_SITE_DATA.contact.emailSecondary}
+              </a>
+            </div>
+            <div>
+              <a
                 href={`tel:${LIVE_SITE_DATA.contact.phone.replace(/\s+/g, '')}`}
                 className="text-[#E5E0D6] hover:text-white transition-colors"
               >
