@@ -296,6 +296,7 @@ export interface Translations {
     calendarDesc: string;
     calendarQuestion: string;
     calendarNewTab: string;
+    openCalendarBtn: string;
     backBtn: string;
     feeNotice: string;
     formHeader: string;
@@ -390,7 +391,7 @@ export const translations: Record<Language, Translations> = {
         successTitle: 'Message envoyé',
         successMsg: 'Merci, votre message a bien été envoyé. Le cabinet vous répondra dans les meilleurs délais.',
         sendAnother: 'Envoyer un autre message',
-        errorMsg: "L'envoi a échoué. Merci de réessayer ou d'écrire directement à p.maistriau@gmail.com.",
+        errorMsg: "L'envoi a échoué. Merci de réessayer ou d'écrire directement à info@avocat-maistriau.com.",
         gdpr: 'Les données transmises sont utilisées uniquement pour répondre à votre demande, dans le respect du secret professionnel.',
       },
     },
@@ -590,7 +591,7 @@ export const translations: Record<Language, Translations> = {
         successTitle: 'Message envoyé',
         successMsg: 'Merci, votre message a bien été envoyé. Le cabinet vous répondra dans les meilleurs délais.',
         sendAnother: 'Envoyer un autre message',
-        errorMsg: "L'envoi a échoué. Merci de réessayer ou d'écrire directement à p.maistriau@gmail.com.",
+        errorMsg: "L'envoi a échoué. Merci de réessayer ou d'écrire directement à info@avocat-maistriau.com.",
         gdpr: 'Les données transmises sont utilisées uniquement pour répondre à votre demande, dans le respect du secret professionnel.',
       },
     },
@@ -689,7 +690,7 @@ export const translations: Record<Language, Translations> = {
       gdprTitle: 'Traitement des données personnelles (RGPD)',
       gdprP1: 'Le cabinet de Maître Philippe MAISTRIAU attache une importance capitale à la protection de votre vie privée et de vos données personnelles. Cette politique vise à vous informer de la manière dont nous collectons et traitons vos données, conformément au Règlement Général sur la Protection des Données (RGPD) et à la législation belge.',
       gdprItems: {
-        controller: 'Responsable du traitement : Maître Philippe MAISTRIAU, Rue Abbé Cuypers 3 à 1040 Etterbeek, Belgique (p.maistriau@gmail.com).',
+        controller: 'Responsable du traitement : Maître Philippe MAISTRIAU, Rue Abbé Cuypers 3 à 1040 Etterbeek, Belgique (info@avocat-maistriau.com).',
         purposes: 'Finalités : Gestion des demandes de rendez-vous et de contact, traitement de votre dossier juridique, facturation et respect des obligations légales.',
         secrecy: 'Secret Professionnel : En tant qu\'avocat, Maître Philippe MAISTRIAU est tenu au secret professionnel le plus strict. Vos données ne sont jamais vendues ni cédées à des tiers.',
         rights: 'Vos droits : Droit d\'accès, de rectification, d\'effacement et de limitation sur simple demande écrite.',
@@ -727,6 +728,7 @@ export const translations: Record<Language, Translations> = {
       calendarDesc: 'Choisissez directement votre date et votre plage horaire parmi les créneaux synchronisés de Maître Philippe Maistriau.',
       calendarQuestion: 'Une question ?',
       calendarNewTab: 'Ouvrir l\'agenda dans un nouvel onglet',
+      openCalendarBtn: 'Ouvrir le calendrier de réservation',
       backBtn: '← Retour',
       feeNotice: 'Première consultation forfaitaire : 125 € TTC',
       formHeader: 'Formulaire de rendez-vous',
@@ -751,7 +753,7 @@ export const translations: Record<Language, Translations> = {
       flatFeeLabel: 'Tarif forfaitaire :',
       flatFeeDetail: '125 € TTC (durée non strictement limitée)',
       closeBtn: 'Fermer',
-      errorMsg: "L'envoi a échoué. Merci de réessayer ou d'écrire directement à p.maistriau@gmail.com.",
+      errorMsg: "L'envoi a échoué. Merci de réessayer ou d'écrire directement à info@avocat-maistriau.com.",
       gdpr: 'Les données transmises sont utilisées uniquement pour répondre à votre demande, dans le respect du secret professionnel.',
     },
     reviewModal: {
@@ -819,7 +821,7 @@ export const translations: Record<Language, Translations> = {
         successTitle: 'Message Sent',
         successMsg: 'Thank you, your message has been successfully sent. The firm will reply as soon as possible.',
         sendAnother: 'Send another message',
-        errorMsg: 'Sending failed. Please try again or write directly to p.maistriau@gmail.com.',
+        errorMsg: 'Sending failed. Please try again or write directly to info@avocat-maistriau.com.',
         gdpr: 'The data submitted is used solely to respond to your request, in strict compliance with professional secrecy.',
       },
     },
@@ -1019,7 +1021,7 @@ export const translations: Record<Language, Translations> = {
         successTitle: 'Message Sent',
         successMsg: 'Thank you, your message has been successfully sent. The firm will reply as soon as possible.',
         sendAnother: 'Send another message',
-        errorMsg: 'Sending failed. Please try again or write directly to p.maistriau@gmail.com.',
+        errorMsg: 'Sending failed. Please try again or write directly to info@avocat-maistriau.com.',
         gdpr: 'The data submitted is used solely to respond to your request, in strict compliance with professional secrecy.',
       },
     },
@@ -1118,7 +1120,7 @@ export const translations: Record<Language, Translations> = {
       gdprTitle: 'Personal Data Processing (GDPR)',
       gdprP1: 'The law firm of Maître Philippe MAISTRIAU places utmost importance on protecting your privacy and personal data. This policy is designed to inform you of how we collect and process your data in compliance with the General Data Protection Regulation (GDPR) and Belgian data protection legislation.',
       gdprItems: {
-        controller: 'Data Controller: Maître Philippe MAISTRIAU, Rue Abbé Cuypers 3, 1040 Etterbeek, Belgium (p.maistriau@gmail.com).',
+        controller: 'Data Controller: Maître Philippe MAISTRIAU, Rue Abbé Cuypers 3, 1040 Etterbeek, Belgium (info@avocat-maistriau.com).',
         purposes: 'Purposes: Handling appointment requests and inquiries, managing your legal case, billing, and complying with statutory obligations.',
         secrecy: 'Professional Secrecy: As an attorney, Maître Philippe MAISTRIAU is bound by the strictest professional secrecy. Your data is never sold, traded, or shared with third parties.',
         rights: 'Your Rights: Right of access, rectification, erasure, and restriction of processing upon simple written request.',
@@ -1156,6 +1158,7 @@ export const translations: Record<Language, Translations> = {
       calendarDesc: 'Choose your date and time slot directly from Maître Philippe Maistriau\'s synchronized schedule.',
       calendarQuestion: 'Have a question?',
       calendarNewTab: 'Open calendar in a new tab',
+      openCalendarBtn: 'Open booking calendar',
       backBtn: '← Back',
       feeNotice: 'Initial flat-fee consultation: € 125 incl. VAT',
       formHeader: 'Appointment Request Form',
@@ -1180,7 +1183,7 @@ export const translations: Record<Language, Translations> = {
       flatFeeLabel: 'Flat fee:',
       flatFeeDetail: '€ 125 incl. VAT (not strictly time-limited)',
       closeBtn: 'Close',
-      errorMsg: 'Sending failed. Please try again or write directly to p.maistriau@gmail.com.',
+      errorMsg: 'Sending failed. Please try again or write directly to info@avocat-maistriau.com.',
       gdpr: 'The data submitted is used solely to respond to your request, in strict compliance with professional secrecy.',
     },
     reviewModal: {

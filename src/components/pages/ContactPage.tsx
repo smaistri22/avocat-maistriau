@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import contactImg from '../../assets/live/contact_img.png';
 import { LIVE_SITE_DATA } from '../../data/liveSiteData';
-import { AlertTriangle, CheckCircle2, Calendar, Phone, Mail, MapPin } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Calendar, Phone, Mail, MapPin, ExternalLink } from 'lucide-react';
 import { sendWeb3Form } from '../../lib/sendForm';
 import { useLanguage } from '../../i18n/LanguageContext';
 
@@ -99,22 +99,24 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
 
             {/* Primary Action Buttons */}
             <div className="pt-2 flex flex-wrap gap-3">
-              <a
-                href={LIVE_SITE_DATA.contact.bookingUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={onOpenBooking}
                 className="flex items-center gap-2 rounded-full bg-[#181615] px-7 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] transition-all hover:bg-stone-800 active:scale-95 shadow-md font-sans"
               >
                 <Calendar className="h-4 w-4" />
                 <span>{t.contact.googleCalendarBtn}</span>
-              </a>
+              </button>
 
-              <button
-                onClick={onOpenBooking}
+              <a
+                href={LIVE_SITE_DATA.contact.bookingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-1.5 rounded-full border border-stone-400 bg-white px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-stone-800 transition-all hover:border-stone-900 active:scale-95 shadow-xs font-sans"
               >
-                <span>{t.contact.optionsBtn}</span>
-              </button>
+                <span>{t.bookingModal.openCalendarBtn}</span>
+                <ExternalLink className="h-3.5 w-3.5 opacity-70" />
+              </a>
             </div>
 
             {/* Direct Coordinates */}
@@ -127,12 +129,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
                 <Mail className="h-4 w-4 text-stone-500" />
                 <a href={`mailto:${LIVE_SITE_DATA.contact.email}`} className="underline">
                   {LIVE_SITE_DATA.contact.email}
-                </a>
-              </div>
-              <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-stone-500" />
-                <a href={`mailto:${LIVE_SITE_DATA.contact.emailSecondary}`} className="underline">
-                  {LIVE_SITE_DATA.contact.emailSecondary}
                 </a>
               </div>
               <div className="flex items-center gap-2">

@@ -44,11 +44,6 @@ export const MentionsLegalesPage: React.FC = () => {
                   {LIVE_SITE_DATA.contact.email}
                 </a>
               </div>
-              <div className="text-xs text-stone-600 font-sans">
-                <a href={`mailto:${LIVE_SITE_DATA.contact.emailSecondary}`} className="hover:underline">
-                  {LIVE_SITE_DATA.contact.emailSecondary}
-                </a>
-              </div>
             </div>
           </div>
         </div>

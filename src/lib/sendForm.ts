@@ -16,7 +16,10 @@ export async function sendWeb3Form(payload: Record<string, any>): Promise<SendFo
       body: JSON.stringify({
         access_key: WEB3FORMS_ACCESS_KEY,
         from_name: 'Site avocat-maistriau.com',
+        to_email: 'info@avocat-maistriau.com',
+        recipient: 'info@avocat-maistriau.com',
         botcheck: false,
+        'Destinataire': 'info@avocat-maistriau.com',
         'Langue': payload.Langue || 'FR',
         ...payload,
       }),
@@ -28,12 +31,12 @@ export async function sendWeb3Form(payload: Record<string, any>): Promise<SendFo
     }
     return {
       success: false,
-      message: data.message || "L'envoi a échoué. Merci de réessayer ou d'écrire directement à p.maistriau@gmail.com.",
+      message: data.message || "L'envoi a échoué. Merci de réessayer ou d'écrire directement à info@avocat-maistriau.com.",
     };
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "L'envoi a échoué. Merci de réessayer ou d'écrire directement à p.maistriau@gmail.com.",
+      message: error instanceof Error ? error.message : "L'envoi a échoué. Merci de réessayer ou d'écrire directement à info@avocat-maistriau.com.",
     };
   }
 }

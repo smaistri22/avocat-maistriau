@@ -11,7 +11,7 @@ interface LiveBookingModalProps {
 
 export const LiveBookingModal: React.FC<LiveBookingModalProps> = ({ isOpen, onClose }) => {
   const { language, t } = useLanguage();
-  const [mode, setMode] = useState<'calendar' | 'form' | 'options'>('options');
+  const [mode, setMode] = useState<'calendar' | 'form'>('calendar');
   const [appointmentType, setAppointmentType] = useState<'cabinet' | 'visio'>('cabinet');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -67,7 +67,7 @@ export const LiveBookingModal: React.FC<LiveBookingModalProps> = ({ isOpen, onCl
     setSubmitted(false);
     setSubmittedDetails(null);
     setErrorMessage('');
-    setMode('options');
+    setMode('calendar');
     onClose();
   };
 
@@ -123,160 +123,66 @@ export const LiveBookingModal: React.FC<LiveBookingModalProps> = ({ isOpen, onCl
                 </h3>
               </div>
               <a
-                href={LIVE_SITE_DATA.contact.bookingUrl}
+                href="https://calendar.app.google/17xcthXGg4aFYQ838"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs font-sans font-semibold text-stone-700 hover:text-stone-950 underline"
+                className="inline-flex items-center gap-1.5 text-xs font-sans font-semibold text-stone-700 hover:text-stone-950 underline"
               >
-                <span>{t.bookingModal.fullscreen}</span>
-                <ExternalLink className="h-3 w-3" />
+                <span>{t.bookingModal.openCalendarBtn}</span>
+                <ExternalLink className="h-3.5 w-3.5" />
               </a>
             </div>
 
-            <p className="font-serif text-xs text-stone-600 mb-4">
+            <p className="font-serif text-xs sm:text-sm text-stone-600 mb-4">
               {t.bookingModal.calendarDesc}
             </p>
 
             {/* Embedded Google Calendar Appointment Scheduler */}
-            <div className="relative w-full h-[520px] rounded-xl overflow-hidden border border-[#E2DBD0] bg-white shadow-xs">
+            <div className="relative w-full h-[700px] rounded-xl overflow-hidden bg-white shadow-xs">
               <iframe
-                src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ21yH52q740q5vP7sR69f59f?gv=true"
+                src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2UU8__szgPeKs_8OTQlr8-Lm7EYijqfFDZD1x2ONI15G6d0QdzK-v9AGCVuNwzf1UrPq2QpFxY?gv=true"
                 style={{ border: 0 }}
                 width="100%"
                 height="100%"
                 title={t.bookingModal.calendarHeader}
+                className="w-full h-full border-0"
               />
-              <div className="absolute bottom-3 right-3 bg-white/95 px-3 py-1.5 rounded-lg border border-stone-200 shadow-xs flex items-center gap-2 text-xs font-sans">
-                <span>{t.bookingModal.calendarQuestion}</span>
-                <a
-                  href={LIVE_SITE_DATA.contact.bookingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-bold text-stone-900 underline flex items-center gap-1"
-                >
-                  {t.bookingModal.calendarNewTab} <ExternalLink className="h-3 w-3" />
-                </a>
-              </div>
             </div>
 
-            <div className="mt-4 flex justify-between items-center font-sans text-xs text-stone-500">
-              <button
-                type="button"
-                onClick={() => setMode('options')}
-                className="hover:text-stone-900 underline"
-              >
-                {t.bookingModal.backBtn}
-              </button>
-              <span>{t.bookingModal.feeNotice}</span>
-            </div>
-          </div>
-        ) : mode === 'options' ? (
-          <div>
-            <div className="text-center mb-8">
-              <span className="text-xs uppercase tracking-wider text-stone-400 font-sans block mb-1">
-                {t.bookingModal.cabinetEtterbeek}
-              </span>
-              <h3 className="text-3xl font-normal text-[#181615]">
-                {t.bookingModal.title}
-              </h3>
-              <p className="font-serif text-sm text-stone-600 mt-2">
-                {t.bookingModal.subtitle}
-              </p>
-            </div>
-
-            <div className="space-y-4 mb-6">
-              
-              {/* Option 1: Official Google Calendar Appointment scheduling */}
+            {/* Bouton de secours sous l'iframe */}
+            <div className="mt-5 flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-[#E2DBD0] font-sans">
               <a
-                href={LIVE_SITE_DATA.contact.bookingUrl}
+                href="https://calendar.app.google/17xcthXGg4aFYQ838"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block p-5 rounded-xl border-2 border-[#181615] bg-white hover:bg-[#F2ECE1] transition-all group shadow-xs"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#181615] px-7 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#F8F5EE] transition-all hover:bg-stone-800 active:scale-95 shadow-xs w-full sm:w-auto"
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3.5">
-                    <div className="p-2.5 rounded-xl bg-[#FAF8F3] border border-[#E2DBD0] shrink-0 text-[#181615]">
-                      <Calendar className="h-6 w-6" />
-                    </div>
-                    <div className="text-left">
-                      <div className="font-serif text-base sm:text-lg font-bold text-[#181615] flex items-center gap-2">
-                        <span>{t.bookingModal.option1Title}</span>
-                        <span className="text-[10px] uppercase font-sans tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold">
-                          {t.bookingModal.option1Realtime}
-                        </span>
-                      </div>
-                      <div className="text-xs text-stone-600 font-sans mt-0.5">
-                        {t.bookingModal.option1Desc}
-                      </div>
-                    </div>
-                  </div>
-                  <ExternalLink className="h-4 w-4 text-stone-400 group-hover:text-stone-900 transition-colors shrink-0 ml-2" />
-                </div>
+                <span>{t.bookingModal.openCalendarBtn}</span>
+                <ExternalLink className="h-4 w-4 opacity-80" />
               </a>
 
-              {/* Option 2: Embedded Google Calendar in app */}
-              <button
-                type="button"
-                onClick={() => setMode('calendar')}
-                className="w-full p-4 rounded-xl border border-[#D5CDBD] bg-white hover:border-stone-800 hover:bg-[#F9F7F2] transition-colors text-left"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-[#EFEAE0] text-stone-800">
-                      <Calendar className="h-4 w-4" />
-                    </div>
-                    <div>
-                      <div className="font-serif text-sm font-bold text-[#181615]">
-                        {t.bookingModal.option2Title}
-                      </div>
-                      <div className="text-xs text-stone-500 font-sans">
-                        {t.bookingModal.option2Desc}
-                      </div>
-                    </div>
-                  </div>
-                  <ArrowRight className="h-4 w-4 text-stone-400" />
-                </div>
-              </button>
-
-              {/* Option 3: Form request */}
-              <button
-                type="button"
-                onClick={() => setMode('form')}
-                className="w-full p-4 rounded-xl border border-[#D5CDBD] bg-white hover:border-stone-800 hover:bg-[#F9F7F2] transition-colors text-left"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-[#EFEAE0] text-stone-800">
-                      <Clock className="h-4 w-4" />
-                    </div>
-                    <div>
-                      <div className="font-serif text-sm font-bold text-[#181615]">
-                        {t.bookingModal.option3Title}
-                      </div>
-                      <div className="text-xs text-stone-500 font-sans">
-                        {t.bookingModal.option3Desc}
-                      </div>
-                    </div>
-                  </div>
-                  <ArrowRight className="h-4 w-4 text-stone-400" />
-                </div>
-              </button>
-
-            </div>
-
-            <div className="pt-4 border-t border-[#EAE4D8] flex items-center justify-between text-xs text-stone-500 font-sans">
-              <span>{t.bookingModal.phoneLabel} {LIVE_SITE_DATA.contact.phone}</span>
-              <span>{t.bookingModal.addressLabel}</span>
+              <div className="flex items-center gap-4 text-xs text-stone-600">
+                <button
+                  type="button"
+                  onClick={() => setMode('form')}
+                  className="hover:text-stone-950 underline transition-colors"
+                >
+                  {t.bookingModal.option3Title}
+                </button>
+                <span>·</span>
+                <span className="italic">{t.bookingModal.feeNotice}</span>
+              </div>
             </div>
           </div>
         ) : (
           <div>
             <div className="mb-6">
               <button
-                onClick={() => setMode('options')}
-                className="text-xs text-stone-500 hover:text-stone-900 underline font-sans mb-2 inline-block"
+                type="button"
+                onClick={() => setMode('calendar')}
+                className="text-xs text-stone-500 hover:text-stone-950 underline font-sans mb-2 inline-flex items-center gap-1"
               >
-                {t.bookingModal.backToOptions}
+                ← {t.bookingModal.openCalendarBtn}
               </button>
               <h3 className="text-2xl font-normal text-[#181615]">
                 {t.bookingModal.formHeader}
@@ -402,8 +308,8 @@ export const LiveBookingModal: React.FC<LiveBookingModalProps> = ({ isOpen, onCl
                 <button
                   type="button"
                   disabled={isSubmitting}
-                  onClick={() => setMode('options')}
-                  className="px-4 py-2 text-xs font-semibold text-stone-600 hover:text-stone-900 disabled:opacity-50"
+                  onClick={() => setMode('calendar')}
+                  className="px-4 py-2 text-xs font-semibold text-stone-600 hover:text-stone-950 disabled:opacity-50"
                 >
                   {t.bookingModal.cancelBtn}
                 </button>

@@ -67,7 +67,7 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
       setReferenceNumber(ref);
       setSubmitted(true);
     } else {
-      setErrorMessage("L'envoi a échoué. Merci de réessayer ou d'écrire directement à p.maistriau@gmail.com.");
+      setErrorMessage("L'envoi a échoué. Merci de réessayer ou d'écrire directement à info@avocat-maistriau.com.");
     }
   };
 
